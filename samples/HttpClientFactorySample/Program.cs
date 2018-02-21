@@ -58,15 +58,9 @@ namespace HttpClientFactorySample
             // Build a totally custom policy using any criteria
             .AddPolicyHandler(Policy.Handle<HttpRequestException>().RetryAsync())
 
-            // Build a policy that will handle exceptions (connection failures)
-            .AddExceptionPolicyHandler(p => p.RetryAsync())
-
             // Build a policy that will handle exceptions and 500s from the remote server
             .AddServerErrorPolicyHandler(p => p.RetryAsync())
 
-            // Build a policy that will handle exceptions, 400s, and 500s from the remote server
-            .AddBadRequestPolicyHandler(p => p.RetryAsync())
-            
             .AddHttpMessageHandler(() => new RetryHandler()) // Retry requests to github using our retry handler
             .AddTypedClient<GithubClient>();
         }
